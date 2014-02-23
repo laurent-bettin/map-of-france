@@ -117,13 +117,12 @@ mapOfFrance.prototype.createPath = function(coo, attr, datas) {
 
 mapOfFrance.prototype.draw = function() {
 
-    var departments = franceData['departments']; //raccourci
-    var regions = franceData['regions']; //raccourci
+    var departments = franceData['departments']; //shortcut
+    var regions = franceData['regions']; //shortcut
     var deptOpts = this['opts']['deptOpts'];
     var regionOpts = this['opts']['regionsOpts'];
     var node;
     var datas;
-    // var transformationMatrix = 'm'+this.scaleFactor+' 0 0 '+this.scaleFactor+' 0 0';
 
     this.paper.setStart();
 
