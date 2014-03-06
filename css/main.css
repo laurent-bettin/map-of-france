@@ -78,7 +78,7 @@ a:active {
    Titles
    ========================================================================== */
 h1, h2, h3, h4, h5, h6 {
-    margin: 0 0 0 1em;
+    margin: 0 0 1em;
     font-weight: 700;
     font-style: normal;
 }
@@ -220,22 +220,10 @@ source https://github.com/stubbornella/oocss/blob/master/core/spacing/space.css
 }
 
 #canvas {
+    border: 1px solid #000;
     height: 570px;
-    margin: 50px 0 0 23px;
     position: relative;
     width: 590px;
-}
-
-#canvas-network {
-    left: -10px;
-    position: absolute;
-    top: 0;
-}
-
-#canvas-france-fiche-produit {
-    left: 0;
-    position: absolute;
-    top: 0;
 }
 
 /* ==========================================================================

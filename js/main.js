@@ -1,6 +1,4 @@
-var front = {};
-
-var mapOfFrance = (function() {
+var mapoffrance = (function() {
 
     //private static method
     var isFunction = function(functionToCheck) {
@@ -8,7 +6,7 @@ var mapOfFrance = (function() {
         return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
     }
 
-    var construct = function(canvasId, width, height) {
+    var MapOfFrance = function(canvasId, width, height) {
         this.paper = new Raphael(canvasId, width, height);
         this.fset = null;
         this.opts = {
@@ -46,68 +44,68 @@ var mapOfFrance = (function() {
     };
 
     //return raphael instance
-    construct.prototype.getPaper = function() {
+    MapOfFrance.prototype.getPaper = function() {
         return this.paper;
     }
 
-    construct.prototype.setTransformationMatrix = function (transformationMatrix) {
+    MapOfFrance.prototype.setTransformationMatrix = function (transformationMatrix) {
         this['opts']['transformationMatrix'] = transformationMatrix;
         return this;
     }
 
     //change default attribut for departments
     //chainable
-    construct.prototype.setDeptBaseAttr = function(attr) {
+    MapOfFrance.prototype.setDeptBaseAttr = function(attr) {
         this['opts']['deptOpts']['attr']['base'] = attr;
         return this;
     }
 
     //return default attributes of departements
-    construct.prototype.getDeptBaseAttr = function() {
+    MapOfFrance.prototype.getDeptBaseAttr = function() {
         return this['opts']['deptOpts']['attr']['base'];
     }
 
     //change default attribut for regions
     //chainable
-    construct.prototype.setRegionsBaseAttr = function(attr) {
+    MapOfFrance.prototype.setRegionsBaseAttr = function(attr) {
         this['opts']['regionsOpts']['attr']['base'] = attr;
         return this;
     }
 
     //return default attributes of regions
-    construct.prototype.getRegionsBaseAttr = function() {
+    MapOfFrance.prototype.getRegionsBaseAttr = function() {
         return this['opts']['regionsOpts']['attr']['base'];
     }
 
     //exclude all regions from rendering
     //chainable
-    construct.prototype.excludeRegions = function() {
+    MapOfFrance.prototype.excludeRegions = function() {
         this['opts']['regionsOpts']['exclude']['all'] = true;
         return this;
     }
 
     //exclude all departments from rendering
     //chainable
-    construct.prototype.excludeDepts = function() {
+    MapOfFrance.prototype.excludeDepts = function() {
         this['opts']['deptOpts']['exclude']['all'] = true;
         return this;
     }
 
     //Set a custom list of departments to exclude from rendering
     //chainable
-    construct.prototype.setDeptsExcludeList = function(excludeList) {
+    MapOfFrance.prototype.setDeptsExcludeList = function(excludeList) {
         this['opts']['deptOpts']['exclude']['list'] = excludeList;
         return this;
     }
 
     //Set a custom list of regions to exclude from rendering
     //chainable
-    construct.prototype.setRegionsExcludeList = function(excludeList) {
+    MapOfFrance.prototype.setRegionsExcludeList = function(excludeList) {
         this['opts']['regionsOpts']['exclude']['list'] = excludeList;
         return this;
     }
 
-    construct.prototype.createPath = function(coo, attr, datas) {
+    MapOfFrance.prototype.createPath = function(coo, attr, datas) {
         var path = this.paper.path(coo);
         path.attr(attr);
         for (var k in datas) {
@@ -116,7 +114,7 @@ var mapOfFrance = (function() {
         return path;
     };
 
-    construct.prototype.draw = function() {
+    MapOfFrance.prototype.draw = function() {
 
         var departments = franceData['departments']; //shortcut
         var regions = franceData['regions']; //shortcut
@@ -165,11 +163,13 @@ var mapOfFrance = (function() {
         this.fset.transform(this['opts']['transformationMatrix']);
     };
 
-    return construct;
+    return {
+        MapOfFrance: MapOfFrance
+    }
 
 })();
 
-(function (context) {
+var front = (function () {
     "use strict";
 
     var ui = {
@@ -180,7 +180,7 @@ var mapOfFrance = (function() {
                 'stroke': '#888',
                 'cursor': 'pointer'
             }
-            var myMap = new mapOfFrance('canvas-france', 590, 570);
+            var myMap = new mapoffrance.MapOfFrance('canvas-france', 590, 570);
 
             myMap['opts']['deptOpts']['onMouseOver'] = function() {
                 this.attr(overAttr);
@@ -196,8 +196,8 @@ var mapOfFrance = (function() {
         }
     };
 
-    context.ui = ui;
+    return ui;
 
-})(front)
+})()
 
-onDomReady(front.ui.init);
+onDomReady(front.init);
