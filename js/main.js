@@ -1,10 +1,11 @@
 var mapoffrance = (function() {
+    "use strict";
 
     //private static method
     var isFunction = function(functionToCheck) {
         var getType = {};
         return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-    }
+    };
 
     var MapOfFrance = function(canvasId, width, height) {
         this.paper = new Raphael(canvasId, width, height);
@@ -15,11 +16,11 @@ var mapoffrance = (function() {
                 // possible attributs : http://raphaeljs.com/reference.html#Element.attr
                 attr: {
                     base: {
-                        'stroke': '#666'
+                        stroke: '#666'
                     }
                 },
                 exclude: {
-                    all: false,
+                    everything: false,
                     list: []
                 }
             },
@@ -27,13 +28,13 @@ var mapoffrance = (function() {
                 // possible attributs : http://raphaeljs.com/reference.html#Element.attr
                 attr: {
                     base: {
-                        'fill': '#d9dadb',
-                        'stroke': '#888',
-                        'cursor': 'pointer'
+                        fill: '#d9dadb',
+                        stroke: '#888',
+                        cursor: 'pointer'
                     }
                 },
                 exclude: {
-                    all: false,
+                    everything: false,
                     list: []
                 },
                 onMouseOver: null,
@@ -46,113 +47,113 @@ var mapoffrance = (function() {
     //return raphael instance
     MapOfFrance.prototype.getPaper = function() {
         return this.paper;
-    }
+    };
 
     MapOfFrance.prototype.setTransformationMatrix = function (transformationMatrix) {
-        this['opts']['transformationMatrix'] = transformationMatrix;
+        this.opts.transformationMatrix = transformationMatrix;
         return this;
-    }
+    };
 
     //change default attribut for departments
     //chainable
     MapOfFrance.prototype.setDeptBaseAttr = function(attr) {
-        this['opts']['deptOpts']['attr']['base'] = attr;
+        this.opts.deptOpts.attr.base = attr;
         return this;
-    }
+    };
 
     //return default attributes of departements
     MapOfFrance.prototype.getDeptBaseAttr = function() {
-        return this['opts']['deptOpts']['attr']['base'];
-    }
+        return this.opts.deptOpts.attr.base;
+    };
 
     //change default attribut for regions
     //chainable
     MapOfFrance.prototype.setRegionsBaseAttr = function(attr) {
-        this['opts']['regionsOpts']['attr']['base'] = attr;
+        this.opts.regionsOpts.attr.base = attr;
         return this;
-    }
+    };
 
     //return default attributes of regions
     MapOfFrance.prototype.getRegionsBaseAttr = function() {
-        return this['opts']['regionsOpts']['attr']['base'];
-    }
+        return this.opts.regionsOpts.attr.base;
+    };
 
     //exclude all regions from rendering
     //chainable
     MapOfFrance.prototype.excludeRegions = function() {
-        this['opts']['regionsOpts']['exclude']['all'] = true;
+        this.opts.regionsOpts.exclude.everything = true;
         return this;
-    }
+    };
 
     //exclude all departments from rendering
     //chainable
     MapOfFrance.prototype.excludeDepts = function() {
-        this['opts']['deptOpts']['exclude']['all'] = true;
+        this.opts.deptOpts.exclude.everything = true;
         return this;
-    }
+    };
 
     //Set a custom list of departments to exclude from rendering
     //chainable
     MapOfFrance.prototype.setDeptsExcludeList = function(excludeList) {
-        this['opts']['deptOpts']['exclude']['list'] = excludeList;
+        this.opts.deptOpts.exclude.list = excludeList;
         return this;
-    }
+    };
 
     //Set a custom list of regions to exclude from rendering
     //chainable
     MapOfFrance.prototype.setRegionsExcludeList = function(excludeList) {
-        this['opts']['regionsOpts']['exclude']['list'] = excludeList;
+        this.opts.regionsOpts.exclude.list = excludeList;
         return this;
-    }
+    };
 
     MapOfFrance.prototype.createPath = function(coo, attr, datas) {
         var path = this.paper.path(coo);
         path.attr(attr);
         for (var k in datas) {
-            path.data(k, datas[k])
+            path.data(k, datas[k]);
         }
         return path;
     };
 
     MapOfFrance.prototype.draw = function() {
 
-        var departments = franceData['departments']; //shortcut
-        var regions = franceData['regions']; //shortcut
-        var deptOpts = this['opts']['deptOpts'];
-        var regionOpts = this['opts']['regionsOpts'];
+        var departments = franceData.departments; //shortcut
+        var regions = franceData.regions; //shortcut
+        var deptOpts = this.opts.deptOpts;
+        var regionOpts = this.opts.regionsOpts;
         var node;
         var datas;
 
         this.paper.setStart();
 
-        if (!deptOpts['exclude']['all']) {
+        if (!deptOpts.exclude.everything) {
             for (var d in departments) {
-                if (deptOpts['exclude']['list'].indexOf(d) === -1) {
+                if (deptOpts.exclude.list.indexOf(d) === -1) {
                     // var newPath = Raphael.transformPath(departments[d]['coo'], transformationMatrix)
                     datas = {
-                        'data-name': departments[d]['name'],
-                        'data-insee': d
+                        dataName: departments[d].identifier,
+                        dataInsee: d
+                    };
+                    node = this.createPath(departments[d].coo, deptOpts.attr.base, datas);
+                    if (isFunction(deptOpts.onMouseOver)) {
+                        node.mouseover(deptOpts.onMouseOver);
                     }
-                    node = this.createPath(departments[d]['coo'], deptOpts['attr']['base'], datas)
-                    if (isFunction(deptOpts['onMouseOver'])) {
-                        node.mouseover(deptOpts['onMouseOver']);
-                    }
-                    if (isFunction(deptOpts['onMouseOut'])) {
-                        node.mouseout(deptOpts['onMouseOut']);
+                    if (isFunction(deptOpts.onMouseOut)) {
+                        node.mouseout(deptOpts.onMouseOut);
                     }
                     // node.hover(deptOpts['onMouseOver'], deptOpts['onMouseOut']);
                 }
             }
         }
 
-        if (!regionOpts['exclude']['all']) {
+        if (!regionOpts.exclude.everything) {
             for (var r in regions) {
-                if (regionOpts['exclude']['list'].indexOf(r) === -1) {
+                if (regionOpts.exclude.list.indexOf(r) === -1) {
                     datas = {
-                        'data-name': regions[r]['name'],
-                        'data-insee': r
-                    }
-                    node = this.createPath(regions[r]['coo'], regionOpts['attr']['base'], datas)
+                        dataName: regions[r].identifier,
+                        dataInsee: r
+                    };
+                    node = this.createPath(regions[r].coo, regionOpts.attr.base, datas);
                     // node.hover(mapOfFrance.regionMouseOver, mapOfFrance.regionMouseOver);
                     // var newPath = Raphael.transformPath(regions[r]['coo'], transformationMatrix)
                 }
@@ -160,12 +161,12 @@ var mapoffrance = (function() {
         }
 
         this.fset = this.paper.setFinish();
-        this.fset.transform(this['opts']['transformationMatrix']);
+        this.fset.transform(this.opts.transformationMatrix);
     };
 
     return {
         MapOfFrance: MapOfFrance
-    }
+    };
 
 })();
 
@@ -176,21 +177,22 @@ var front = (function () {
         init : function () {
 
             var overAttr = {
-                'fill': 'teal',
-                'stroke': '#888',
-                'cursor': 'pointer'
-            }
+                fill: 'teal',
+                stroke: '#888',
+                cursor: 'pointer'
+            };
             var myMap = new mapoffrance.MapOfFrance('canvas-france', 590, 570);
 
-            myMap['opts']['deptOpts']['onMouseOver'] = function() {
+            myMap.opts.deptOpts.onMouseOver = function() {
                 this.attr(overAttr);
+                console.log(this.data('dataName'));
             };
 
-            myMap['opts']['deptOpts']['onMouseOut'] = function() {
+            myMap.opts.deptOpts.onMouseOut = function() {
                 this.attr(myMap.getDeptBaseAttr());
             };
 
-            myMap.setDeptsExcludeList(['75', '77', '78', '91', '92', '93', '94', '95'])
+            myMap.setDeptsExcludeList(['75', '77', '78', '91', '92', '93', '94', '95']);
             // myMap.setTransformationMatrix('m0.75 0 0 0.75 200 0');
             myMap.excludeRegions().draw();
         }
@@ -198,6 +200,6 @@ var front = (function () {
 
     return ui;
 
-})()
+})();
 
 onDomReady(front.init);
