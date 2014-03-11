@@ -1,4 +1,4 @@
-var mapoffrance = (function() {
+var mapoffrance = (function(franceData) {
     "use strict";
 
     //private static method
@@ -168,7 +168,7 @@ var mapoffrance = (function() {
         MapOfFrance: MapOfFrance
     };
 
-})();
+})(franceData);
 
 var front = (function () {
     "use strict";
