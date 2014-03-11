@@ -29,8 +29,7 @@ var mapoffrance = (function(franceData) {
                 attr: {
                     base: {
                         fill: '#d9dadb',
-                        stroke: '#888',
-                        cursor: 'pointer'
+                        stroke: '#888'
                     }
                 },
                 exclude: {
@@ -87,7 +86,7 @@ var mapoffrance = (function(franceData) {
 
     //exclude all departments from rendering
     //chainable
-    MapOfFrance.prototype.excludeDepts = function() {
+    MapOfFrance.prototype.excludeDepartments = function() {
         this.opts.deptOpts.exclude.everything = true;
         return this;
     };
