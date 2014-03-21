@@ -11,7 +11,7 @@ var mapoffrance = (function(franceData) {
         this.paper = new Raphael(canvasId, width, height);
         this.fset = null;
         this.opts = {
-            transformationMatrix: 'm1 0 0 1 0 0',
+            transformationMatrix: '', //m1 0 0 1 0 0
             regionsOpts: {
                 // possible attributs : http://raphaeljs.com/reference.html#Element.attr
                 attr: {
@@ -160,7 +160,10 @@ var mapoffrance = (function(franceData) {
         }
 
         this.fset = this.paper.setFinish();
-        this.fset.transform(this.opts.transformationMatrix);
+        if(this.opts.transformationMatrix !== '') {
+            this.fset.transform(this.opts.transformationMatrix);
+        }
+
     };
 
     return {
