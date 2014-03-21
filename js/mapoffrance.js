@@ -48,6 +48,12 @@ var mapoffrance = (function(franceData) {
         return this.paper;
     };
 
+    //return complete set of elements in the map
+    //fset is null while map is not rendering
+    MapOfFrance.prototype.getSet = function() {
+        return this.fset;
+    };
+
     MapOfFrance.prototype.setTransformationMatrix = function (transformationMatrix) {
         this.opts.transformationMatrix = transformationMatrix;
         return this;
