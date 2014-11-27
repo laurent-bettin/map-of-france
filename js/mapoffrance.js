@@ -10,6 +10,8 @@ var mapoffrance = (function(franceData) {
     var MapOfFrance = function(canvasId, width, height) {
         this.paper = new Raphael(canvasId, width, height);
         this.fset = null;
+        this.customSetList = null,
+        this.customSetResult = [],
         this.opts = {
             transformationMatrix: '', //m1 0 0 1 0 0
             regionsOpts: {
@@ -120,6 +122,10 @@ var mapoffrance = (function(franceData) {
         return path;
     };
 
+    MapOfFrance.prototype.createCustomSet = function(element, index, array) {
+        this.customSetResult.push(this.paper.set());
+    };
+
     MapOfFrance.prototype.draw = function() {
 
         var departments = franceData.departments; //shortcut
@@ -128,11 +134,22 @@ var mapoffrance = (function(franceData) {
         var regionOpts = this.opts.regionsOpts;
         var node;
         var datas;
+        var d;
+
+        this.customSetList.forEach(this.createCustomSet, this);
+
+        var addToCustomSet = function(element, index, array) {
+            var dIndex = element.indexOf(d);
+            if (element.indexOf(d) !== -1) {
+                this.customSetResult[index].push(node);
+            }
+        }
 
         this.paper.setStart();
 
         if (!deptOpts.exclude.everything) {
-            for (var d in departments) {
+            for (d in departments) {
+
                 if (deptOpts.exclude.list.indexOf(d) === -1) {
                     // var newPath = Raphael.transformPath(departments[d]['coo'], transformationMatrix)
                     datas = {
@@ -140,6 +157,8 @@ var mapoffrance = (function(franceData) {
                         dataInsee: d
                     };
                     node = this.createPath(departments[d].coo, deptOpts.attr.base, datas);
+                    this.customSetList.forEach(addToCustomSet, this);
+
                     if (isFunction(deptOpts.onMouseOver)) {
                         node.mouseover(deptOpts.onMouseOver);
                     }
@@ -159,6 +178,7 @@ var mapoffrance = (function(franceData) {
                         dataInsee: r
                     };
                     node = this.createPath(regions[r].coo, regionOpts.attr.base, datas);
+                    this.customSetList.forEach(addToCustomSet, this);
                     // node.hover(mapOfFrance.regionMouseOver, mapOfFrance.regionMouseOver);
                     // var newPath = Raphael.transformPath(regions[r]['coo'], transformationMatrix)
                 }
