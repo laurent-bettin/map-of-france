@@ -172,18 +172,15 @@ var mapoffrance = (function(franceData) {
                 continue;
             }
 
-            // if (deptOpts.exclude.list.indexOf(d) === -1) {
-                // var newPath = Raphael.transformPath(departments[d]['coo'], transformationMatrix)
-                datas = {
-                    dataName: franceData[zone].identifier,
-                    dataInsee: franceData[zone].INSEE,
-                    dataType: franceData[zone].subdivisions
-                };
-                node = this.createPath(franceData[zone].coo, this.opts.attr[franceData[zone].subdivisions], datas);
+            datas = {
+                dataName: franceData[zone].identifier,
+                dataInsee: franceData[zone].INSEE,
+                dataType: franceData[zone].subdivisions
+            };
+            node = this.createPath(franceData[zone].coo, this.opts.attr[franceData[zone].subdivisions], datas);
 
-                this.opts.customSetList.forEach(addToCustomSet, this);
+            this.opts.customSetList.forEach(addToCustomSet, this);
 
-            // }
         }
 
         this.fset = this.paper.setFinish();
