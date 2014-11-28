@@ -36,6 +36,8 @@ var mapoffrance = (function(franceData) {
     var MapOfFrance = function(canvasId, width, height) {
         this.paper = new Raphael(canvasId, width, height);
         this.fset = null;
+        this.regionsSet = null;
+        this.dptsSet = null;
         this.customSetResult = [];
 
         this.opts = {
@@ -131,6 +133,14 @@ var mapoffrance = (function(franceData) {
         return this;
     };
 
+    MapOfFrance.prototype.getDptsSet = function(setList) {
+        return this.dptsSet;
+    };
+
+    MapOfFrance.prototype.getRegionsSet = function(setList) {
+        return this.regionsSet;
+    };
+
     MapOfFrance.prototype.createPath = function(coo, attr, datas) {
         var path = this.paper.path(coo);
         path.attr(attr);
@@ -150,6 +160,8 @@ var mapoffrance = (function(franceData) {
         var datas;
         var zone;
 
+        this.regionsSet = this.paper.set();
+        this.dptsSet = this.paper.set();
         this.opts.customSetList.forEach(this.createCustomSet, this);
 
         var addToCustomSet = function(element, index, array) {
@@ -177,6 +189,14 @@ var mapoffrance = (function(franceData) {
             };
 
             node = this.createPath(franceData[zone].coo, this.opts.attr[franceData[zone].subdivisions], datas);
+
+            if(franceData[zone].subdivisions === 'region') {
+                this.regionsSet.push(node);
+            }
+
+            if(franceData[zone].subdivisions === 'department') {
+                this.dptsSet.push(node);
+            }
 
             this.opts.customSetList.forEach(addToCustomSet, this);
 
