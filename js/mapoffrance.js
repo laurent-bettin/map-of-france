@@ -51,13 +51,19 @@ var mapoffrance = (function(franceData) {
                 region: {
                     styles: {
                         stroke: '#666'
-                    }
+                    },
+                    mouseoverEvent: null,
+                    mouseoutEvent: null,
+                    clickEvent: null
                 },
                 department: {
                     styles: {
                         fill: '#d9dadb',
                         stroke: '#888'
-                    }
+                    },
+                    mouseoverEvent: null,
+                    mouseoutEvent: null,
+                    clickEvent: null
                 }
             }
         };
@@ -196,10 +202,28 @@ var mapoffrance = (function(franceData) {
 
             if(franceData[zone].subdivisions === 'region') {
                 this.regionsSet.push(node);
+                if(this.opts.attr.region.mouseoverEvent) {
+                    node.mouseover(this.opts.attr.region.mouseoverEvent);
+                }
+                if(this.opts.attr.region.mouseoutEvent) {
+                    node.mouseout(this.opts.attr.region.mouseoutEvent);
+                }
+                if(this.opts.attr.region.clickEvent) {
+                    node.click(this.opts.attr.region.clickEvent);
+                }
             }
 
             if(franceData[zone].subdivisions === 'department') {
                 this.dptsSet.push(node);
+                if(this.opts.attr.department.mouseoverEvent) {
+                    node.mouseover(this.opts.attr.department.mouseoverEvent);
+                }
+                if(this.opts.attr.department.mouseoutEvent) {
+                    node.mouseout(this.opts.attr.department.mouseoutEvent);
+                }
+                if(this.opts.attr.department.clickEvent) {
+                    node.click(this.opts.attr.department.clickEvent);
+                }
             }
 
             this.opts.customSetList.forEach(addToCustomSet, this);
