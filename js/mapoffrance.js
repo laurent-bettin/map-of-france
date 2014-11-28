@@ -46,10 +46,10 @@ var mapoffrance = (function(franceData) {
             excludeOutreMer: false,
             transformationMatrix: '', //m1 0 0 1 0 0
             attr: {
-                'region': {
+                region: {
                     stroke: '#666'
                 },
-                'department': {
+                department: {
                     fill: '#d9dadb',
                     stroke: '#888'
                 }
