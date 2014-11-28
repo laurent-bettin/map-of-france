@@ -49,11 +49,15 @@ var mapoffrance = (function(franceData) {
             transformationMatrix: '', //m1 0 0 1 0 0
             attr: {
                 region: {
-                    stroke: '#666'
+                    styles: {
+                        stroke: '#666'
+                    }
                 },
                 department: {
-                    fill: '#d9dadb',
-                    stroke: '#888'
+                    styles: {
+                        fill: '#d9dadb',
+                        stroke: '#888'
+                    }
                 }
             }
         };
@@ -79,25 +83,25 @@ var mapoffrance = (function(franceData) {
     //change default attribut for departments
     //chainable
     MapOfFrance.prototype.setDeptBaseAttr = function(attr) {
-        this.opts.attr['department'] = attr;
+        this.opts.attr['department'].styles = attr;
         return this;
     };
 
     //return default attributes of departements
     MapOfFrance.prototype.getDeptBaseAttr = function() {
-        return this.opts.attr['department'];
+        return this.opts.attr['department'].styles;
     };
 
     //change default attribut for regions
     //chainable
     MapOfFrance.prototype.setRegionsBaseAttr = function(attr) {
-        this.opts.attr['region'] = attr;
+        this.opts.attr['region'].styles = attr;
         return this;
     };
 
     //return default attributes of regions
     MapOfFrance.prototype.getRegionsBaseAttr = function() {
-        return this.opts.attr['region'];
+        return this.opts.attr['region'].styles;
     };
 
     //exclude all regions from rendering
@@ -188,7 +192,7 @@ var mapoffrance = (function(franceData) {
                 dataType: franceData[zone].subdivisions
             };
 
-            node = this.createPath(franceData[zone].coo, this.opts.attr[franceData[zone].subdivisions], datas);
+            node = this.createPath(franceData[zone].coo, this.opts.attr[franceData[zone].subdivisions].styles, datas);
 
             if(franceData[zone].subdivisions === 'region') {
                 this.regionsSet.push(node);
