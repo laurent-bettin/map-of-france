@@ -6,7 +6,13 @@ var front = (function () {
 
             var myMap = new mapoffrance.MapOfFrance('canvas-france', 590, 570);
 
-            myMap.excludeRegions().draw();
+            myMap.setDeptBaseAttr({
+                fill: 'transparent',
+                stroke: '#f00'
+            })
+            .excludeRegions()
+            .draw();
+
         }
     };
 
