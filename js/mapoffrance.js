@@ -146,8 +146,6 @@ var mapoffrance = (function(franceData) {
 
     MapOfFrance.prototype.draw = function() {
 
-        var deptOpts = this.opts.deptOpts;
-        var regionOpts = this.opts.regionsOpts;
         var node;
         var datas;
         var zone;
@@ -177,6 +175,7 @@ var mapoffrance = (function(franceData) {
                 dataInsee: franceData[zone].INSEE,
                 dataType: franceData[zone].subdivisions
             };
+
             node = this.createPath(franceData[zone].coo, this.opts.attr[franceData[zone].subdivisions], datas);
 
             this.opts.customSetList.forEach(addToCustomSet, this);
